@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:dc_video_player/FilePickRoute.dart';
+import 'package:dc_video_player/SettingsRoute.dart';
+import 'package:dc_video_player/FavouritesRoute.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,37 +25,34 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Video Player DC'),
+      home: FullBottomNavigationBar(title: 'Video Player DC'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class FullBottomNavigationBar extends StatefulWidget {
+  FullBottomNavigationBar({Key key, this.title}) : super(key: key);
   final String title;
-
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _FullBottomNavigationBarState createState() => _FullBottomNavigationBarState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
+class _FullBottomNavigationBarState extends State<FullBottomNavigationBar> {
 
-  final tabs = [
-    Center(child: Text('W1')),
-    Center(child: Text('W2')),
-    Center(child: Text('W3')),
+  int _currentIndex = 0;
+  final List<Widget> _children =
+  [
+    FilePickRoute(),
+    SettingsRoute(),
+    FavouritesRoute(),
   ];
+
+  void onTappedOption(int index)
+  {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: tabs[_currentIndex],
+      body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.folder),
             label: 'Browse',
-    ),
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
@@ -91,8 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             _currentIndex = index;
           });
-    },
-    ),
+        },
+      ),
     );
   }
 }
