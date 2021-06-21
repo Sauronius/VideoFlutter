@@ -69,11 +69,7 @@ class _FilePickRouteState extends State<FilePickRoute> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        routes: {
-          VideoRoute.routeName: (context) => VideoRoute(),
-        },
+    return Scaffold(
         key: _scaffoldKey,
         body: Center(
             child: Padding(
@@ -155,7 +151,6 @@ class _FilePickRouteState extends State<FilePickRoute> {
                 ),
               ),
             )),
-      ),
-    );
+      );
   }
 }

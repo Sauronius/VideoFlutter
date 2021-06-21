@@ -1,3 +1,4 @@
+import 'package:dc_video_player/VideoRoute.dart';
 import 'package:flutter/material.dart';
 import 'package:dc_video_player/FilePickRoute.dart';
 import 'package:dc_video_player/SettingsRoute.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: FullBottomNavigationBar(title: 'Video Player DC'),
+      routes: {
+        VideoRoute.routeName: (context) => VideoRoute()
+      },
     );
   }
 }
