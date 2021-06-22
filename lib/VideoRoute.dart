@@ -35,14 +35,6 @@ class _VideoRouteState extends State<VideoRoute> {
     }
   }
 
-  void togglePlay() {
-    if (playerController.value.isPlaying) {
-      playerController.pause();
-    } else {
-      playerController.play();
-    }
-  }
-
   File args;
 
   @override

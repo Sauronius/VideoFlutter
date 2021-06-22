@@ -7,6 +7,7 @@ import 'package:dc_video_player/VideoRoute.dart';
 
 class FNArgument {
   final String fName;
+
   FNArgument(this.fName);
 }
 
@@ -14,8 +15,8 @@ class FilePickRoute extends StatefulWidget {
   @override
   _FilePickRouteState createState() => _FilePickRouteState();
 }
-class _FilePickRouteState extends State<FilePickRoute> {
 
+class _FilePickRouteState extends State<FilePickRoute> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _fileName;
   List<PlatformFile> _paths;
@@ -24,13 +25,11 @@ class _FilePickRouteState extends State<FilePickRoute> {
   bool _loadingPath = false;
   bool _multiPick = false;
   FileType _pickingType = FileType.video;
-  TextEditingController _controller = TextEditingController();
   String _completeVideoPath;
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() => _extension = _controller.text);
   }
 
   void _openFileExplorer() async {
@@ -43,8 +42,7 @@ class _FilePickRouteState extends State<FilePickRoute> {
         allowedExtensions: (_extension?.isNotEmpty ?? false)
             ? _extension?.replaceAll(' ', '')?.split(',')
             : null,
-      ))
-          ?.files;
+      ))?.files;
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     } catch (ex) {
@@ -54,8 +52,7 @@ class _FilePickRouteState extends State<FilePickRoute> {
     setState(() {
       _loadingPath = false;
       print(_paths.first.extension);
-      _fileName =
-      _paths != null ? _paths.map((e) => e.name).toString() : '...';
+      _fileName = _paths != null ? _paths.map((e) => e.name).toString() : '...';
     });
   }
 
@@ -67,95 +64,95 @@ class _FilePickRouteState extends State<FilePickRoute> {
 
   void _openVideo() {
     if (_fileName != null)
-      Navigator.pushNamed(context, VideoRoute.routeName, arguments: File(_completeVideoPath));
+      Navigator.pushNamed(context, VideoRoute.routeName,
+          arguments: File(_completeVideoPath));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        body: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              child: SingleChildScrollView(
+      key: _scaffoldKey,
+      body: Center(
+          child: Padding(
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
-                      child: Column(
-                        children: <Widget>[
-                          ElevatedButton(
-                            onPressed: () => _openFileExplorer(),
-                            child: const Text("Open file picker"),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => _selectFolder(),
-                            child: const Text("Pick folder"),
-                          ),
-                          ElevatedButton(
-                              onPressed: () => _openVideo(),
-                              child: const Text("Open Video"))
-                        ],
-                      ),
+                    ElevatedButton(
+                      onPressed: () => _openFileExplorer(),
+                      child: const Text("Open file picker"),
                     ),
-                    Builder(
-                      builder: (BuildContext context) => _loadingPath
-                          ? Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
-                        child: const CircularProgressIndicator(),
-                      )
-                          : _directoryPath != null
-                          ? ListTile(
-                        title: const Text('Directory path'),
-                        subtitle: Text(_directoryPath),
-                      )
-                          : _paths != null
-                          ? Container(
-                        padding: const EdgeInsets.only(bottom: 30.0),
-                        height:
-                        MediaQuery.of(context).size.height * 0.50,
-                        child: Scrollbar(
-                            child: ListView.separated(
-                              itemCount:
-                              _paths != null && _paths.isNotEmpty
-                                  ? _paths.length
-                                  : 1,
-                              itemBuilder:
-                                  (BuildContext context, int index) {
-                                final bool isMultiPath =
-                                    _paths != null && _paths.isNotEmpty;
-                                final String name = 'File $index: ' +
-                                    (isMultiPath
-                                        ? _paths
-                                        .map((e) => e.name)
-                                        .toList()[index]
-                                        : _fileName ?? '...');
-                                final path = _paths
-                                    .map((e) => e.path)
-                                    .toList()[index]
-                                    .toString();
-
-                                _completeVideoPath = path;
-
-                                return ListTile(
-                                  title: Text(
-                                    name,
-                                  ),
-                                  subtitle: Text('$path'),
-                                );
-                              },
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                              const Divider(),
-                            )),
-                      )
-                          : const SizedBox(),
+                    ElevatedButton(
+                      onPressed: () => _selectFolder(),
+                      child: const Text("Pick folder"),
                     ),
+                    ElevatedButton(
+                        onPressed: () => _openVideo(),
+                        child: const Text("Open Video"))
                   ],
                 ),
               ),
-            )),
-      );
+              Builder(
+                builder: (BuildContext context) => _loadingPath
+                    ? Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: const CircularProgressIndicator(),
+                      )
+                    : _directoryPath != null
+                        ? ListTile(
+                            title: const Text('Directory path'),
+                            subtitle: Text(_directoryPath),
+                          )
+                        : _paths != null
+                            ? Container(
+                                padding: const EdgeInsets.only(bottom: 30.0),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.50,
+                                child: Scrollbar(
+                                    child: ListView.separated(
+                                  itemCount: _paths != null && _paths.isNotEmpty
+                                      ? _paths.length
+                                      : 1,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    final bool isMultiPath =
+                                        _paths != null && _paths.isNotEmpty;
+                                    final String name = 'File $index: ' +
+                                        (isMultiPath
+                                            ? _paths
+                                                .map((e) => e.name)
+                                                .toList()[index]
+                                            : _fileName ?? '...');
+                                    final path = _paths
+                                        .map((e) => e.path)
+                                        .toList()[index]
+                                        .toString();
+
+                                    _completeVideoPath = path;
+
+                                    return ListTile(
+                                      title: Text(
+                                        name,
+                                      ),
+                                      subtitle: Text('$path'),
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          const Divider(),
+                                )),
+                              )
+                            : const SizedBox(),
+              ),
+            ],
+          ),
+        ),
+      )),
+    );
   }
 }
