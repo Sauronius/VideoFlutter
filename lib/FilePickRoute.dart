@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +25,7 @@ class _FilePickRouteState extends State<FilePickRoute> {
   bool _multiPick = false;
   FileType _pickingType = FileType.video;
   TextEditingController _controller = TextEditingController();
+  String _completeVideoPath;
 
   @override
   void initState() {
@@ -38,7 +41,7 @@ class _FilePickRouteState extends State<FilePickRoute> {
         type: _pickingType,
         allowMultiple: _multiPick,
         allowedExtensions: (_extension?.isNotEmpty ?? false)
-            ? _extension?.replaceAll(' ', '').split(',')
+            ? _extension?.replaceAll(' ', '')?.split(',')
             : null,
       ))
           ?.files;
@@ -64,7 +67,7 @@ class _FilePickRouteState extends State<FilePickRoute> {
 
   void _openVideo() {
     if (_fileName != null)
-      Navigator.pushNamed(context, VideoRoute.routeName, arguments: FNArgument(_fileName));
+      Navigator.pushNamed(context, VideoRoute.routeName, arguments: File(_completeVideoPath));
   }
 
   @override
@@ -133,11 +136,13 @@ class _FilePickRouteState extends State<FilePickRoute> {
                                     .toList()[index]
                                     .toString();
 
+                                _completeVideoPath = path;
+
                                 return ListTile(
                                   title: Text(
                                     name,
                                   ),
-                                  subtitle: Text(path),
+                                  subtitle: Text('$path'),
                                 );
                               },
                               separatorBuilder:
